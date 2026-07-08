@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  currentSlug: string;
+  tags: string[];
+  cluster: string;
+}
+
+const { currentSlug, tags, cluster } = Astro.props;
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+
+const scored = allPosts
+  .filter((p) => p.id !== currentSlug)
+  .map((p) => {
+    const tagOverlap = p.data.tags.filter((t: string) => tags.includes(t)).length;
+    const clusterMatch = p.data.cluster === cluster ? 2 : 0;
+    return { post: p, score: tagOverlap + clusterMatch };
+  })
+  .filter((s) => s.score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3);
+---
+
+{scored.length > 0 && (
+  <aside aria-label="Related Build Guides" class="related-posts-widget">
+    <h3>Related Build Guides</h3>
+    <ul>
+      {scored.map(({ post }) => (
+        <li>
+          <a href={`/posts/${post.id}/`}>
+            {post.data.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </aside>
+)}
+
+<style>
+  .related-posts-widget h3 {
+    font-size: 0.95rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+  }
+  .related-posts-widget ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .related-posts-widget a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    display: block;
+  }
+  .related-posts-widget a:hover {
+    color: var(--accent-color);
+  }
+</style>

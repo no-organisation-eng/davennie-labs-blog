@@ -1,0 +1,363 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailCapture from '../components/EmailCapture.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+
+// Sort posts by date descending
+posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+const clusters = {
+  'micro-saas-automation': posts.filter(p => p.data.cluster === 'micro-saas-automation'),
+  'niche-integrations': posts.filter(p => p.data.cluster === 'niche-integrations'),
+  'programmatic-asset-building': posts.filter(p => p.data.cluster === 'programmatic-asset-building'),
+};
+---
+
+<BaseLayout 
+  title="Davennie Labs - AI Automation & Yield Blueprints" 
+  description="Blueprints for zero-trust pipelines, programmatic SEO, and B2B workflow arbitrage."
+>
+  <main class="home-container">
+    <!-- Hero Block -->
+    <section class="hero-section">
+      <div class="hero-tag">ENTERPRISE-GRADE LEVERAGE</div>
+      <h1>We turn raw compute into profitable digital assets.</h1>
+      <p class="hero-subtext">No hype, no buzzwords. Just literal system architectures, schema definitions, and codebase blueprints for techpreneurs scaling yield.</p>
+      
+      <div class="hero-cta-group">
+        <a href="#build-guides" class="btn-primary">Explore Blueprints</a>
+        <button id="pwa-install-btn" class="btn-secondary hidden">Install PWA</button>
+      </div>
+    </section>
+
+    <!-- AdSense Space -->
+    <div class="ad-container">
+      <AdSlot slotId="home-top-ad" minHeight={90} />
+    </div>
+
+    <!-- Cluster Grid -->
+    <section id="build-guides" class="guides-section">
+      <h2 class="section-title">Active Operational Clusters</h2>
+      
+      <div class="clusters-grid">
+        <div class="cluster-card">
+          <div class="cluster-icon">🤖</div>
+          <h3>Micro-SaaS Automation</h3>
+          <p>Bypassing server databases with static file edge storage and building typed schemas to bulletproof AI code gen.</p>
+          <ul class="cluster-post-links">
+            {clusters['micro-saas-automation'].slice(0, 3).map(p => (
+              <li><a href={`/posts/${p.id}/`}>{p.data.title}</a></li>
+            ))}
+            {clusters['micro-saas-automation'].length === 0 && <li><span class="no-posts">Blueprints coming soon</span></li>}
+          </ul>
+        </div>
+
+        <div class="cluster-card">
+          <div class="cluster-icon">🔗</div>
+          <h3>Niche Integrations</h3>
+          <p>Building zero-cost extraction pipelines, serverless OCR, and selling custom API endpoints on monthly retainers.</p>
+          <ul class="cluster-post-links">
+            {clusters['niche-integrations'].slice(0, 3).map(p => (
+              <li><a href={`/posts/${p.id}/`}>{p.data.title}</a></li>
+            ))}
+            {clusters['niche-integrations'].length === 0 && <li><span class="no-posts">Blueprints coming soon</span></li>}
+          </ul>
+        </div>
+
+        <div class="cluster-card">
+          <div class="cluster-icon">📈</div>
+          <h3>Programmatic Asset Building</h3>
+          <p>Generating localized directories, AdSense yield scaling, and establishing push notification subscriber moats.</p>
+          <ul class="cluster-post-links">
+            {clusters['programmatic-asset-building'].slice(0, 3).map(p => (
+              <li><a href={`/posts/${p.id}/`}>{p.data.title}</a></li>
+            ))}
+            {clusters['programmatic-asset-building'].length === 0 && <li><span class="no-posts">Blueprints coming soon</span></li>}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Guides -->
+    <section class="latest-section">
+      <h2 class="section-title">Latest Build Blueprints</h2>
+      <div class="posts-list">
+        {posts.map(p => (
+          <article class="post-row">
+            <div class="post-row-meta">
+              <span class="post-row-cluster">{p.data.cluster.replace(/-/g, ' ')}</span>
+              <time datetime={p.data.publishDate.toString()}>{p.data.publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+            </div>
+            <h3 class="post-row-title"><a href={`/posts/${p.id}/`}>{p.data.title}</a></h3>
+            <p class="post-row-desc">{p.data.description}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Email Opt-in -->
+    <section class="newsletter-section">
+      <EmailCapture />
+    </section>
+  </main>
+
+  <script>
+    // Simple PWA install prompt handler
+    let deferredPrompt: any;
+    const installBtn = document.getElementById('pwa-install-btn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (installBtn) {
+        installBtn.classList.remove('hidden');
+      }
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          installBtn.classList.add('hidden');
+        }
+        deferredPrompt = null;
+      });
+    }
+  </script>
+
+  <style>
+    .home-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 5rem;
+    }
+
+    .hero-section {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-section h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 40%, var(--accent-color) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section h1 {
+        font-size: 2.25rem;
+      }
+    }
+
+    .hero-subtext {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .btn-primary {
+      background: var(--accent-color);
+      color: #0b0f19;
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: #7dd3fc;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
+      color: #0b0f19;
+    }
+
+    .btn-secondary {
+      background: rgba(22, 28, 45, 0.6);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(22, 28, 45, 0.9);
+      border-color: var(--accent-color);
+    }
+
+    .ad-container {
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+
+    /* Clusters Layout */
+    .clusters-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .clusters-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cluster-card {
+      background: var(--bg-card-color);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      backdrop-filter: blur(8px);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .cluster-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .cluster-icon {
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .cluster-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .cluster-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .cluster-post-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1.25rem;
+    }
+
+    .cluster-post-links a {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: block;
+    }
+
+    .cluster-post-links a:hover {
+      color: var(--accent-color);
+    }
+
+    .no-posts {
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+
+    /* Latest list */
+    .posts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .post-row {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 2rem;
+    }
+
+    .post-row:last-child {
+      border-bottom: none;
+    }
+
+    .post-row-meta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+    }
+
+    .post-row-cluster {
+      text-transform: uppercase;
+      color: var(--accent-color);
+      font-weight: 700;
+    }
+
+    .post-row-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .post-row-title a {
+      color: var(--text-color);
+    }
+
+    .post-row-title a:hover {
+      color: var(--accent-color);
+    }
+
+    .post-row-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</BaseLayout>

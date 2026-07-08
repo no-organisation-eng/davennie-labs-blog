@@ -1,0 +1,21 @@
+{
+  "name": "Davennie Labs Blog",
+  "short_name": "DavennieLabs",
+  "description": "Zero-trust architectures and automated B2B blueprints.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0f19",
+  "theme_color": "#38bdf8",
+  "icons": [
+    {
+      "src": "/logo-pwa-black.png",
+      "sizes": "240x240",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-pwa-black.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

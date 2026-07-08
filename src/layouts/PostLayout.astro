@@ -1,0 +1,636 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import EmailCapture from '../components/EmailCapture.astro';
+import AdSlot from '../components/AdSlot.astro';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    publishDate: Date;
+    cluster: string;
+    tags: string[];
+    heroImage?: string;
+    canonicalSourceTranscript?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+const formattedDate = new Date(frontmatter.publishDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const videoSrc = frontmatter.heroImage 
+  ? (frontmatter.heroImage.endsWith('.gif') 
+      ? frontmatter.heroImage.replace('.gif', '.mp4') 
+      : (frontmatter.heroImage.endsWith('.mp4') ? frontmatter.heroImage : null))
+  : null;
+---
+
+<BaseLayout 
+  title={frontmatter.title} 
+  description={frontmatter.description}
+  heroImage={frontmatter.heroImage}
+  publishDate={frontmatter.publishDate}
+  cluster={frontmatter.cluster}
+  tags={frontmatter.tags}
+>
+  <main class="post-layout-container">
+    <!-- Progress Indicator Bar -->
+    <div class="reading-progress-container">
+      <div class="reading-progress-bar" id="reading-progress"></div>
+    </div>
+
+    <article class="article-wrapper">
+      <header class="post-header">
+        <div class="post-category">{frontmatter.cluster.replace(/-/g, ' ')}</div>
+        <h1 class="post-title">{frontmatter.title}</h1>
+        
+        <div class="post-meta">
+          <span class="meta-author">David Akpan</span>
+          <span class="meta-separator">|</span>
+          <time datetime={frontmatter.publishDate.toString()}>{formattedDate}</time>
+          <span class="meta-separator">|</span>
+          <span class="meta-read-time">6 Min Read</span>
+        </div>
+      </header>
+
+      {frontmatter.heroImage && (
+        <div class="hero-image-wrapper">
+          {videoSrc ? (
+            <video autoplay loop muted playsinline class="hero-image" style="width: 100%; height: 100%; object-fit: cover;">
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+          ) : (
+            <img src={frontmatter.heroImage} alt={frontmatter.title} class="hero-image" />
+          )}
+        </div>
+      )}
+
+      <!-- Layout Split: Content & Sidebar -->
+      <div class="content-split-grid">
+        <div class="article-body">
+          <slot />
+
+          <!-- Inline Ad Slot -->
+          <div class="article-ad-container">
+            <AdSlot slotId="content-inline-ad" minHeight={250} />
+          </div>
+
+          <!-- Share Section -->
+          <div class="share-box">
+            <h3>Share Operational Blueprint</h3>
+            <p class="share-hook-text">
+              I spent 3 grinding years learning to code infrastructure, just to watch my custom AI pipeline execute the exact same build flawlessly in 8 seconds. Code is a commodity. Here is the exact zero-trust architecture I use to turn raw agentic compute into a profitable digital asset. No hype. Just blueprints.
+            </p>
+            
+            <!-- Link Preview Card Mockup -->
+            <div class="link-preview-mockup">
+              <div class="preview-media">
+                <video autoplay loop muted playsinline class="preview-video">
+                  <source src="/images/zero-trust-hero.mp4" type="video/mp4" />
+                </video>
+              </div>
+              <div class="preview-info">
+                <div class="preview-title">{frontmatter.title}</div>
+                <div class="preview-desc">{frontmatter.description}</div>
+                <div class="preview-domain">davennieblog.pages.dev</div>
+              </div>
+            </div>
+
+            <div class="share-actions">
+              <button class="btn-copy" id="btn-copy-hook">
+                <span class="copy-text">📋 Copy Share Script</span>
+                <span class="copied-text hidden">✔ Copied!</span>
+              </button>
+              
+              <div class="share-links">
+                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("I spent 3 grinding years learning to code infrastructure, just to watch my custom AI pipeline execute the exact same build flawlessly in 8 seconds. Here is the blueprint:")}&url=${encodeURIComponent(Astro.url.href)}`} target="_blank" rel="noopener noreferrer" class="share-btn x-share">
+                  Share on X
+                </a>
+                <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(Astro.url.href)}`} target="_blank" rel="noopener noreferrer" class="share-btn linkedin-share">
+                  LinkedIn
+                </a>
+                <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent("Check out this Zero-Trust Architecture blueprint: " + Astro.url.href)}`} target="_blank" rel="noopener noreferrer" class="share-btn whatsapp-share">
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            const btnCopy = document.getElementById('btn-copy-hook');
+            if (btnCopy) {
+              btnCopy.addEventListener('click', async () => {
+                const text = `I spent 3 grinding years learning to code infrastructure, just to watch my custom AI pipeline execute the exact same build flawlessly in 8 seconds. Code is a commodity. Here is the exact zero-trust architecture I use to turn raw agentic compute into a profitable digital asset. No hype. Just blueprints: ${window.location.href}`;
+                try {
+                  await navigator.clipboard.writeText(text);
+                  const copyTextEl = btnCopy.querySelector('.copy-text');
+                  const copiedTextEl = btnCopy.querySelector('.copied-text');
+                  
+                  copyTextEl?.classList.add('hidden');
+                  copiedTextEl?.classList.remove('hidden');
+                  setTimeout(() => {
+                    copyTextEl?.classList.remove('hidden');
+                    copiedTextEl?.classList.add('hidden');
+                  }, 2000);
+                } catch (err) {
+                  console.error('Failed to copy text: ', err);
+                }
+              });
+            }
+          </script>
+          
+          <!-- Email Opt-In Box -->
+          <div class="article-capture-container">
+            <EmailCapture />
+          </div>
+        </div>
+
+        <aside class="sidebar-wrapper">
+          <div class="sticky-sidebar">
+            <!-- Table of Contents -->
+            <div class="sidebar-widget toc-widget">
+              <h4>In This Article</h4>
+              <nav id="table-of-contents">
+                <ul>
+                  <li><a href="#the-hook">The Hook</a></li>
+                  <li><a href="#1-the-no-database-rule">1. The "No Database" Rule</a></li>
+                  <li><a href="#2-code-schemas-vs-polite-prompting">2. Code Schemas vs. Prompting</a></li>
+                  <li><a href="#3-defensive-adsense-engineering">3. Defensive AdSense</a></li>
+                  <li><a href="#4-building-your-pwa-moat">4. Building Your PWA Moat</a></li>
+                </ul>
+              </nav>
+            </div>
+
+            <!-- Ad in Sidebar -->
+            <div class="sidebar-widget">
+              <AdSlot slotId="sidebar-ad" minHeight={250} />
+            </div>
+
+            <!-- Related Posts -->
+            <div class="sidebar-widget">
+              <RelatedPosts 
+                currentSlug={Astro.url.pathname.replace(/^\/posts\//, '').replace(/\/$/, '')}
+                tags={frontmatter.tags}
+                cluster={frontmatter.cluster}
+              />
+            </div>
+          </div>
+        </aside>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    // Smooth progress indicator
+    const progress = document.getElementById('reading-progress');
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (progress) {
+        progress.style.width = scrolled + '%';
+      }
+    });
+  </script>
+
+  <style>
+    .post-layout-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+      width: 100%;
+    }
+
+    .reading-progress-container {
+      position: fixed;
+      top: 61px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: transparent;
+      z-index: 100;
+    }
+
+    .reading-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-color), #a855f7);
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    .article-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .post-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 2rem;
+    }
+
+    .post-category {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--accent-color);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .post-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    @media (max-width: 768px) {
+      .post-title {
+        font-size: 2rem;
+      }
+    }
+
+    .post-meta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .meta-separator {
+      color: var(--border-color);
+    }
+
+    /* Zero-CLS Hero Image Frame */
+    .hero-image-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-card-color);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .hero-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Grid layout */
+    .content-split-grid {
+      display: grid;
+      grid-template-columns: 8fr 4fr;
+      gap: 4rem;
+    }
+
+    @media (max-width: 992px) {
+      .content-split-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+
+    /* Article Body Elements */
+    .article-body {
+      font-size: 1.125rem;
+      line-height: 1.8;
+      color: #e5e7eb;
+    }
+
+    .article-body :global(p) {
+      margin-bottom: 1.75rem;
+    }
+
+    .article-body :global(h2) {
+      font-size: 1.75rem;
+      margin: 3rem 0 1.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    .article-body :global(h3) {
+      font-size: 1.4rem;
+      margin: 2.5rem 0 1.25rem;
+      font-weight: 600;
+    }
+
+    .article-body :global(h4) {
+      font-size: 1.2rem;
+      margin: 2rem 0 1rem;
+      font-weight: 600;
+    }
+
+    .article-body :global(blockquote) {
+      border-left: 4px solid var(--accent-color);
+      background: var(--bg-card-color);
+      padding: 1.5rem 2rem;
+      margin: 2rem 0;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: var(--text-color);
+    }
+
+    .article-body :global(blockquote p) {
+      margin-bottom: 0;
+    }
+
+    .article-body :global(ul), .article-body :global(ol) {
+      margin-bottom: 1.75rem;
+      padding-left: 2rem;
+    }
+
+    .article-body :global(li) {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Inline elements */
+    .article-body :global(strong) {
+      color: #fff;
+    }
+
+    .article-body :global(code) {
+      background: var(--bg-card-color);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      border: 1px solid var(--border-color);
+    }
+
+    .article-body :global(pre code) {
+      background: transparent;
+      padding: 0;
+      border: none;
+      font-size: inherit;
+    }
+
+    .article-ad-container, .article-capture-container {
+      margin: 3rem 0;
+    }
+
+    /* Sidebar Widgets */
+    .sticky-sidebar {
+      position: sticky;
+      top: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .sidebar-widget {
+      background: var(--bg-card-color);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .sidebar-widget h4 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .toc-widget ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .toc-widget a {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: color 0.2s ease, padding-left 0.2s ease;
+      display: block;
+    }
+
+    .toc-widget a:hover {
+      color: var(--accent-color);
+      padding-left: 4px;
+    }
+
+    /* MDX inline visual assets prevention */
+    .article-body :global(.visual-wrapper) {
+      margin: 2rem 0;
+      width: 100%;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(22, 28, 45, 0.2);
+    }
+    .article-body :global(.visual-wrapper img) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .article-body :global(.aspect-16-9) {
+      aspect-ratio: 16 / 9;
+    }
+    .article-body :global(.aspect-gif) {
+      aspect-ratio: 16 / 9;
+    }
+    .article-body :global(.visual-placeholder) {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2.5rem;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(56, 189, 248, 0.05) 0%, transparent 80%);
+    }
+    .article-body :global(.placeholder-caption) {
+      font-weight: 700;
+      color: var(--accent-color);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .article-body :global(.placeholder-details) {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 500px;
+      line-height: 1.5;
+    }
+
+    /* Share box styles */
+    .share-box {
+      background: rgba(22, 28, 45, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 3rem 0;
+    }
+    .share-box h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+    .share-hook-text {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+      font-style: italic;
+    }
+    .link-preview-mockup {
+      background: #0b0f19;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      margin-bottom: 1.5rem;
+      max-height: 120px;
+    }
+    @media (max-width: 600px) {
+      .link-preview-mockup {
+        flex-direction: column;
+        max-height: none;
+      }
+    }
+    .preview-media {
+      width: 200px;
+      height: 120px;
+      flex-shrink: 0;
+      background: var(--bg-color);
+      overflow: hidden;
+    }
+    @media (max-width: 600px) {
+      .preview-media {
+        width: 100%;
+        height: 150px;
+      }
+    }
+    .preview-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .preview-info {
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .preview-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .preview-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .preview-domain {
+      font-size: 0.75rem;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: var(--font-mono);
+    }
+    .share-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    @media (max-width: 600px) {
+      .share-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .btn-copy:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .share-links {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .share-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .x-share {
+      background: #1da1f2;
+    }
+    .x-share:hover {
+      background: #40aef4;
+      color: #fff;
+    }
+    .linkedin-share {
+      background: #0077b5;
+    }
+    .linkedin-share:hover {
+      background: #1886be;
+      color: #fff;
+    }
+    .whatsapp-share {
+      background: #25d366;
+    }
+    .whatsapp-share:hover {
+      background: #3fe27c;
+      color: #fff;
+    }
+
+    @media (display-mode: standalone) {
+      .post-layout-container {
+        padding-top: 1rem;
+      }
+      .hero-image-wrapper {
+        margin-top: 0;
+        border-radius: 0;
+        aspect-ratio: 16 / 9;
+      }
+    }
+  </style>
+</BaseLayout>

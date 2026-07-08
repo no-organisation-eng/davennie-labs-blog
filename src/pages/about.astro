@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="About Davennie Labs - Techpreneurial Infrastructure" 
+  description="We focus on radical leverage, zero-trust publisher automation, and programmatic SEO."
+>
+  <main class="page-container">
+    <article class="page-content">
+      <h1>About Davennie Labs</h1>
+      <p class="lead-text">Davennie Labs is an operational playground and blueprint library engineered by David Akpan.</p>
+      
+      <p>We believe that code has become a commodity. The true value of any software system is not the code itself, but the audience and attention it captures. Therefore, our mission is to leverage AI agents, serverless infrastructure, and programmatic distribution to construct high-yield digital assets with minimal overhead.</p>
+
+      <h2>Our Core Constraints</h2>
+      <ul>
+        <li><strong>Radical Simplicity:</strong> No databases where static files suffice. Git is our CMS.</li>
+        <li><strong>Defensive Engineering:</strong> Zero layout shifts, edge-cached assets, and strict validation.</li>
+        <li><strong>Sovereign Audience:</strong> Operating PWAs to bypass social media algorithms with direct push access.</li>
+      </ul>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+  .page-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, var(--accent-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .lead-text {
+    font-size: 1.25rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+  }
+  .page-content p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .page-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 2.5rem 0 1.25rem;
+  }
+  .page-content ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+  .page-content li {
+    background: var(--bg-card-color);
+    border: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    color: var(--text-muted);
+  }
+  .page-content li strong {
+    color: #fff;
+  }
+</style>

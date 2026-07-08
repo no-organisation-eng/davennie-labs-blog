@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" rx="12" fill="url(#bgGrad)" stroke="rgba(255, 255, 255, 0.06)" stroke-width="1.5"/>
+  <line x1="400" y1="50" x2="400" y2="400" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1" stroke-dasharray="8 6" />
+
+  <!-- Left: SQL Crash -->
+  <g transform="translate(200, 200)">
+    <rect x="-120" y="-80" width="240" height="160" rx="10" fill="rgba(239, 68, 68, 0.05)" stroke="#ef4444" stroke-width="2" />
+    <text x="0" y="-40" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="700" text-anchor="middle">DYNAMIC SQL DATABASE</text>
+    <circle cx="0" cy="10" r="30" fill="rgba(239, 68, 68, 0.1)" stroke="#ef4444" stroke-width="1.5" />
+    <text x="0" y="16" fill="#ef4444" font-family="'Inter', sans-serif" font-size="18" font-weight="800" text-anchor="middle">❌</text>
+    <text x="0" y="60" fill="#fca5a5" font-family="'JetBrains Mono', monospace" font-size="12" text-anchor="middle">CRASH: Max Connections Limit</text>
+  </g>
+
+  <!-- Right: Static MDX Pages -->
+  <g transform="translate(600, 200)">
+    <rect x="-120" y="-80" width="240" height="160" rx="10" fill="rgba(16, 185, 129, 0.05)" stroke="#10b981" stroke-width="2" />
+    <text x="0" y="-40" fill="#a7f3d0" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="700" text-anchor="middle">CLOUDFLARE Pages + MDX</text>
+    <circle cx="0" cy="10" r="30" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5" />
+    <text x="0" y="16" fill="#10b981" font-family="'Inter', sans-serif" font-size="18" font-weight="800" text-anchor="middle">⚡</text>
+    <text x="0" y="60" fill="#a7f3d0" font-family="'JetBrains Mono', monospace" font-size="12" text-anchor="middle">100% Uptime Static Edge CDN</text>
+  </g>
+</svg>

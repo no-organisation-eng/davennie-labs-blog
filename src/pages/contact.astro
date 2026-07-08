@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Contact Davennie Labs - Operational Inquiries" 
+  description="Connect with us for enterprise collaborations, automated system consulting, or feedback."
+>
+  <main class="page-container">
+    <article class="page-content">
+      <h1>Connect With Us</h1>
+      <p class="lead-text">Have questions regarding our zero-trust publishing blueprints or workflow automation?</p>
+      
+      <p>For inquiries, feedback, or custom API implementation support, reach out via the following channels:</p>
+
+      <div class="contact-methods">
+        <div class="contact-card">
+          <h3>Operational Email</h3>
+          <p><a href="mailto:ops@davennielabs.com">ops@davennielabs.com</a></p>
+        </div>
+        
+        <div class="contact-card">
+          <h3>Telegram Channel</h3>
+          <p><a href="https://t.me/TimeRev_bot" target="_blank" rel="noopener noreferrer">@TimeRev_bot</a></p>
+        </div>
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+  .page-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, var(--accent-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .lead-text {
+    font-size: 1.25rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+  }
+  .page-content p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+  .contact-methods {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 600px) {
+    .contact-methods {
+      grid-template-columns: 1fr;
+    }
+  }
+  .contact-card {
+    background: var(--bg-card-color);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+  .contact-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+</style>

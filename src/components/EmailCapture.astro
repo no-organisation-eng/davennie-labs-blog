@@ -1,0 +1,370 @@
+---
+---
+<div class="email-capture-card">
+  <h3>Join the Leverage Operator Newsletter</h3>
+  <p>Get zero-trust architectures, programmatic SEO blueprints, and automated workflows delivered directly to your inbox. No fluff, just blueprints.</p>
+  
+  <form id="subscribe-form" class="subscribe-form">
+    <input 
+      type="email" 
+      id="subscriber-email" 
+      placeholder="Enter your operational email..." 
+      required 
+      class="subscribe-input"
+    />
+    <button type="submit" id="subscribe-btn" class="subscribe-btn">
+      <span class="btn-text">Get Blueprints</span>
+      <span class="btn-spinner hidden"></span>
+    </button>
+  </form>
+  
+  <div id="subscribe-message" class="subscribe-message hidden"></div>
+</div>
+
+<!-- PWA Prompt Modal (Hidden by default) -->
+<div id="pwa-prompt-modal" class="pwa-modal hidden">
+  <div class="pwa-modal-content">
+    <div class="pwa-modal-header">
+      <h4>⚡ Install PWA Moat</h4>
+    </div>
+    <div class="pwa-modal-body">
+      <p>Operational access granted! Your email has been registered in Supabase.</p>
+      <p>To receive instant push notifications and direct blueprint updates bypassing social media algorithms, install the Davennie Labs Progressive Web App (PWA) now.</p>
+    </div>
+    <div class="pwa-modal-footer">
+      <button id="pwa-confirm-install" class="pwa-install-btn">Install App</button>
+      <button id="pwa-cancel-install" class="pwa-cancel-btn">Decide Later</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('subscribe-form') as HTMLFormElement;
+  const emailInput = document.getElementById('subscriber-email') as HTMLInputElement;
+  const submitBtn = document.getElementById('subscribe-btn') as HTMLButtonElement;
+  const btnText = submitBtn?.querySelector('.btn-text');
+  const btnSpinner = submitBtn?.querySelector('.btn-spinner');
+  const messageEl = document.getElementById('subscribe-message');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = emailInput?.value;
+      const sourceSlug = window.location.pathname.replace(/^\/posts\//, '').replace(/\/$/, '') || 'home';
+
+      // Set loading state
+      if (submitBtn) submitBtn.disabled = true;
+      btnText?.classList.add('hidden');
+      btnSpinner?.classList.remove('hidden');
+      if (messageEl) {
+        messageEl.className = 'subscribe-message hidden';
+        messageEl.textContent = '';
+      }
+
+      try {
+        const response = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, sourceSlug })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Check if global deferred PWA prompt is available
+          // @ts-ignore
+          const deferredPrompt = window.deferredPrompt;
+          if (deferredPrompt) {
+            const modal = document.getElementById('pwa-prompt-modal');
+            modal?.classList.remove('hidden');
+            
+            const confirmBtn = document.getElementById('pwa-confirm-install');
+            const cancelBtn = document.getElementById('pwa-cancel-install');
+            
+            confirmBtn?.addEventListener('click', async () => {
+              modal?.classList.add('hidden');
+              deferredPrompt.prompt();
+              const { outcome } = await deferredPrompt.userChoice;
+              console.log('User PWA install response:', outcome);
+              await subscribeToPush();
+              // @ts-ignore
+              window.deferredPrompt = null;
+            });
+            
+            cancelBtn?.addEventListener('click', async () => {
+              modal?.classList.add('hidden');
+              await subscribeToPush();
+            });
+            
+            if (messageEl) {
+              messageEl.textContent = 'Newsletter access granted. Install prompt active below.';
+              messageEl.className = 'subscribe-message success';
+            }
+          } else {
+            // Devices that do not support PWA installation still receive push prompts
+            await subscribeToPush();
+            if (messageEl) {
+              messageEl.textContent = 'Operational access granted. Check your inbox to confirm.';
+              messageEl.className = 'subscribe-message success';
+            }
+          }
+          form.reset();
+        } else {
+          throw new Error(data.error || 'Subscription failed');
+        }
+      } catch (err: any) {
+        if (messageEl) {
+          messageEl.textContent = err.message || 'An error occurred. Please try again.';
+          messageEl.className = 'subscribe-message error';
+        }
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+        btnText?.classList.remove('hidden');
+        btnSpinner?.classList.add('hidden');
+      }
+    });
+  }
+
+  function urlBase64ToUint8Array(base64String: string) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+
+  async function subscribeToPush() {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      try {
+        const registration = await navigator.serviceWorker.ready;
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          let subscription = await registration.pushManager.getSubscription();
+          if (!subscription) {
+            const res = await fetch('/api/vapid-public-key');
+            const { publicKey } = await res.json();
+            subscription = await registration.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: urlBase64ToUint8Array(publicKey)
+            });
+          }
+
+          await fetch('/api/push-subscribe', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ subscription })
+          });
+        }
+      } catch (err) {
+        console.error('Failed to subscribe to Web Push:', err);
+      }
+    }
+  }
+</script>
+
+<style>
+  .email-capture-card {
+    background: linear-gradient(135deg, rgba(22, 28, 45, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2.25rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    margin: 2rem 0;
+  }
+
+  .email-capture-card h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(90deg, #fff, var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .email-capture-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .subscribe-form {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 600px) {
+    .subscribe-form {
+      flex-direction: column;
+    }
+  }
+
+  .subscribe-input {
+    flex-grow: 1;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .subscribe-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+  }
+
+  .subscribe-btn {
+    background: var(--accent-color);
+    color: #0b0f19;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+  }
+
+  .subscribe-btn:hover {
+    background: #7dd3fc;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+  }
+
+  .subscribe-btn:active {
+    transform: scale(0.98);
+  }
+
+  .subscribe-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .subscribe-message {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+  }
+
+  .subscribe-message.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+    border-left: 3px solid #10b981;
+  }
+
+  .subscribe-message.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border-left: 3px solid #ef4444;
+  }
+
+  /* PWA Modal Styling */
+  .pwa-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(11, 15, 25, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .pwa-modal-content {
+    background: linear-gradient(135deg, rgba(22, 28, 45, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2.25rem;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    text-align: left;
+  }
+  .pwa-modal-header h4 {
+    font-size: 1.25rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  .pwa-modal-body p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .pwa-modal-footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .pwa-install-btn {
+    flex-grow: 1;
+    background: var(--accent-color);
+    color: #0b0f19;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease;
+  }
+  .pwa-install-btn:hover {
+    background: #7dd3fc;
+  }
+  .pwa-cancel-btn {
+    background: rgba(255,255,255,0.05);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .pwa-cancel-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  /* Spinner */
+  .btn-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(11, 15, 25, 0.3);
+    border-top: 2px solid #0b0f19;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Privacy Policy - Davennie Labs" 
+  description="How we handle operational logs, subscriber email collection, and cookies."
+>
+  <main class="page-container">
+    <article class="page-content">
+      <h1>Privacy Policy</h1>
+      <p class="lead-text">Effective Date: July 7, 2026</p>
+      
+      <p>At Davennie Labs, we respect your privacy. This policy outlines how we collect, process, and protect your information when you access our blueprints and subscribe to our newsletter.</p>
+
+      <h2>1. Information We Collect</h2>
+      <p>We only collect your email address when you voluntarily sign up for our newsletter. Additionally, we may log anonymous visitor metrics (such as pages accessed, browser type, and referrer logs) to analyze programmatic traffic patterns.</p>
+
+      <h2>2. AdSense and Third-Party Advertising</h2>
+      <p>This site may utilize Google AdSense to serve advertisements. Google uses cookies (such as the DART cookie) to serve ads based on your visits to this and other websites. You may opt out of personalized advertising by visiting Google's Ads Settings.</p>
+
+      <h2>3. Data Protection</h2>
+      <p>Subscriber emails are stored securely in our private Supabase database. We do not sell, rent, or distribute subscriber logs to any third-party entities.</p>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+  .page-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, var(--accent-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .lead-text {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+  .page-content p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .page-content h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 2rem 0 1rem;
+    color: #fff;
+  }
+</style>

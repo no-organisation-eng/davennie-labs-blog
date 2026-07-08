@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Terms of Service - Davennie Labs" 
+  description="Terms governing the usage of our codebase templates and system blueprints."
+>
+  <main class="page-container">
+    <article class="page-content">
+      <h1>Terms of Service</h1>
+      <p class="lead-text">Effective Date: July 7, 2026</p>
+      
+      <p>By accessing Davennie Labs and reviewing our automated build plans, blueprints, and codebase architectures, you agree to comply with the terms detailed below.</p>
+
+      <h2>1. Blueprint Usage Licence</h2>
+      <p>Unless specified otherwise, all structural plans, layouts, and components are provided "as is" under the MIT open-source license. You are free to replicate, modify, and build upon these models for commercial or private deployments.</p>
+
+      <h2>2. Disclaimer of Liability</h2>
+      <p>We provide educational blueprints. Implement systems, database connections, and publishing automations at your own discretion. Davennie Labs holds zero liability for server errors, Cloudflare charges, database leaks, or lost SEO yield resulting from these blueprints.</p>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+  .page-content h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, var(--accent-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .lead-text {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+  .page-content p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .page-content h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 2rem 0 1rem;
+    color: #fff;
+  }
+</style>

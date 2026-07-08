@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="neonBlue" x1="0" y1="0" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="neonPurple" x1="0" y1="0" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="450" rx="12" fill="url(#bgGrad)" stroke="rgba(255, 255, 255, 0.06)" stroke-width="1.5"/>
+  
+  <!-- Technical Grid overlay -->
+  <path d="M 0,50 L 800,50 M 0,100 L 800,100 M 0,150 L 800,150 M 0,200 L 800,200 M 0,250 L 800,250 M 0,300 L 800,300 M 0,350 L 800,350 M 0,400 L 800,400" fill="none" stroke="rgba(255, 255, 255, 0.02)" stroke-width="1"/>
+  <path d="M 100,0 L 100,450 M 200,0 L 200,450 M 300,0 L 300,450 M 400,0 L 400,450 M 500,0 L 500,450 M 600,0 L 600,450 M 700,0 L 700,450" fill="none" stroke="rgba(255, 255, 255, 0.02)" stroke-width="1"/>
+
+  <!-- AI Agent Node (Left) -->
+  <g transform="translate(150, 225)">
+    <circle cx="0" cy="0" r="45" fill="rgba(168, 85, 247, 0.1)" stroke="url(#neonPurple)" stroke-width="2.5" />
+    <circle cx="0" cy="0" r="35" fill="none" stroke="rgba(168, 85, 247, 0.2)" stroke-width="1" stroke-dasharray="4 3" />
+    <text x="0" y="6" fill="#fff" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="700" text-anchor="middle">AI AGENT</text>
+  </g>
+
+  <!-- Cloudflare Edge Node (Right) -->
+  <g transform="translate(650, 225)">
+    <circle cx="0" cy="0" r="45" fill="rgba(6, 182, 212, 0.1)" stroke="url(#neonBlue)" stroke-width="2.5" />
+    <circle cx="0" cy="0" r="35" fill="none" stroke="rgba(6, 182, 212, 0.2)" stroke-width="1" stroke-dasharray="4 3" />
+    <text x="0" y="6" fill="#fff" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="700" text-anchor="middle">CF EDGE</text>
+  </g>
+
+  <!-- Flow line between Agent and Edge -->
+  <path d="M 195 225 H 605" stroke="rgba(255, 255, 255, 0.1)" stroke-width="4" stroke-dasharray="8 6" />
+  
+  <!-- Glowing Data Packet -->
+  <circle cx="380" cy="225" r="8" fill="#38bdf8" />
+  <circle cx="380" cy="225" r="16" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.5" />
+  
+  <!-- Bypassed SQL DB Node (Center Bottom - Crossed Out) -->
+  <g transform="translate(400, 340)" opacity="0.3">
+    <rect x="-40" y="-25" width="80" height="50" rx="6" fill="#0b0f19" stroke="#ef4444" stroke-width="1.5" />
+    <text x="0" y="5" fill="#ef4444" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" text-anchor="middle">DATABASE</text>
+    <!-- Red Cross -->
+    <line x1="-30" y1="-15" x2="30" y2="15" stroke="#ef4444" stroke-width="3" />
+    <line x1="-30" y1="15" x2="30" y2="-15" stroke="#ef4444" stroke-width="3" />
+  </g>
+  
+  <path d="M 195 225 Q 400 340 605 225" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.15" fill="none" />
+</svg>
