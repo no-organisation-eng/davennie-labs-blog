@@ -83,16 +83,25 @@ const clusters = {
 
     <!-- Latest Guides -->
     <section class="latest-section">
-      <h2 class="section-title">Latest Build Blueprints</h2>
+      <h2 class="section-title">Latest Build Blueprints ({posts.length} Total)</h2>
       <div class="posts-list">
         {posts.map(p => (
           <article class="post-row">
-            <div class="post-row-meta">
-              <span class="post-row-cluster">{p.data.cluster.replace(/-/g, ' ')}</span>
-              <time datetime={p.data.publishDate.toString()}>{p.data.publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+            {p.data.heroImage && (
+              <div class="post-row-image">
+                <a href={`/posts/${p.id}/`}>
+                  <img src={p.data.heroImage} alt={p.data.title} loading="lazy" />
+                </a>
+              </div>
+            )}
+            <div class="post-row-content">
+              <div class="post-row-meta">
+                <span class="post-row-cluster">{p.data.cluster.replace(/-/g, ' ')}</span>
+                <time datetime={p.data.publishDate.toString()}>{p.data.publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+              </div>
+              <h3 class="post-row-title"><a href={`/posts/${p.id}/`}>{p.data.title}</a></h3>
+              <p class="post-row-desc">{p.data.description}</p>
             </div>
-            <h3 class="post-row-title"><a href={`/posts/${p.id}/`}>{p.data.title}</a></h3>
-            <p class="post-row-desc">{p.data.description}</p>
           </article>
         ))}
       </div>
@@ -312,8 +321,40 @@ const clusters = {
     }
 
     .post-row {
+      display: flex;
+      gap: 1.5rem;
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .post-row {
+        flex-direction: column;
+      }
+    }
+
+    .post-row-image {
+      flex-shrink: 0;
+      width: 200px;
+      height: 120px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .post-row-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .post-row-image:hover img {
+      transform: scale(1.05);
+    }
+
+    .post-row-content {
+      flex: 1;
     }
 
     .post-row:last-child {
