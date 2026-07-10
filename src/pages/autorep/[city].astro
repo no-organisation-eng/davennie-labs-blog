@@ -15,45 +15,43 @@ export async function getStaticPaths() {
 const { location } = Astro.props;
 
 // Construct SEO metadata
-const title = `Auto Repair Software in ${location.displayName}, ${location.state} | AutoRep`;
-const description = `The #1 mechanic management system for auto shops in ${location.displayName}. Organize your workshop, track inventory, and send digital invoices instantly.`;
+const title = `AutoRep: Turn Facebook Comments into WhatsApp Sales in ${location.displayName} | AutoRep`;
+const description = `The ultimate AI lead conversion CRM for businesses in ${location.displayName}. AutoRep acts as your 24/7 sales agent, instantly replying to Facebook comments and funneling them to WhatsApp.`;
 ---
 
 <BaseLayout title={title} description={description} canonicalOverride={`https://autorep.biz/${location.city}`}>
   <main class="pseo-container">
     <header class="pseo-hero">
-      <div class="hero-badge">📍 {location.displayName}, {location.state}</div>
+      <div class="hero-badge">📍 Optimized for {location.displayName}, {location.state}</div>
       <h1 class="hero-title">{location.heroHeadline}</h1>
       <p class="hero-subtitle">
-        Join over {location.mechanicCount} mechanics upgrading their operations. 
-        {location.painPoint}
+        AutoRep is like having a 24/7 top-performing sales agent who instantly replies to every Facebook comment, smoothly moves the conversation to WhatsApp, and follows up until the sale is closed. Join over {location.businessCount} forward-thinking brands upgrading their sales pipelines.
       </p>
       <div class="hero-cta">
-        <a href="https://autorep.biz" class="btn-primary">Start Your Free Trial</a>
+        <a href="https://autorep.biz" class="btn-primary">Automate Your Comments Now</a>
       </div>
     </header>
 
     <section class="pseo-content">
       <div class="content-grid">
         <div class="main-content">
-          <h2>Why Top Auto Shops in {location.displayName} Choose AutoRep</h2>
+          <h2>Why Top Brands in {location.displayName} Choose AutoRep</h2>
           <p>
-            Running a successful auto repair business in {location.state} requires more than just mechanical skill. 
-            It requires operational leverage. From the bustling {location.localContext}, workshop owners are transitioning to digital management.
+            {location.painPoint} Customers buy from the business that replies first. From the busy {location.localContext}, smart business owners are transitioning from manual moderation to intelligent AI conversion.
           </p>
           
           <div class="feature-list">
             <div class="feature-item">
-              <h3>📱 Digital Invoicing</h3>
-              <p>Send professional PDF invoices directly to your clients via WhatsApp or Email. No more lost paper receipts.</p>
+              <h3>🧠 Intelligent AI Replies (RAG & Gemini 2.0)</h3>
+              <p>AI that actually knows your business. AutoRep reads your uploaded FAQs to give context-accurate, brand-aligned answers—not just generic, frustrating keyword bot responses.</p>
             </div>
             <div class="feature-item">
-              <h3>🔧 Inventory Tracking</h3>
-              <p>Know exactly what spare parts are in stock. Prevent employee theft and stockouts before they happen.</p>
+              <h3>💬 Facebook to WhatsApp Pipeline</h3>
+              <p>Move conversations where conversions happen. AutoRep injects smart WhatsApp links directly into Facebook replies to capture the user's phone number instantly.</p>
             </div>
             <div class="feature-item">
-              <h3>👥 Customer CRM</h3>
-              <p>Store vehicle history, repair logs, and client phone numbers. Send automated service reminders to increase repeat business.</p>
+              <h3>⏱️ Automated WhatsApp Follow-ups</h3>
+              <p>Never let a hot lead go cold. AutoRep triggers automated follow-up sequences (24h, 3d, 7d) that gently nudge the customer toward your final payment or checkout page.</p>
             </div>
           </div>
 
@@ -68,14 +66,14 @@ const description = `The #1 mechanic management system for auto shops in ${locat
             <ul class="data-list">
               <li><strong>Target Area:</strong> {location.displayName}</li>
               <li><strong>Region:</strong> {location.state}</li>
-              <li><strong>Active Workshops:</strong> {location.mechanicCount}+</li>
+              <li><strong>Active Brands:</strong> {location.businessCount}+</li>
               <li><strong>Search Intent:</strong> <em>"{location.searchQuery}"</em></li>
             </ul>
           </div>
           
           <div class="sidebar-card dark">
             <h3>Ready to scale?</h3>
-            <p>Don't let manual processes cap your revenue.</p>
+            <p>Don't let manual comment replies cap your revenue.</p>
             <a href="https://autorep.biz" class="btn-secondary">Get AutoRep Now</a>
           </div>
         </aside>
