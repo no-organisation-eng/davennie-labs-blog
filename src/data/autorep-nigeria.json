@@ -1,0 +1,52 @@
+[
+  {
+    "city": "uyo",
+    "displayName": "Uyo",
+    "state": "Akwa Ibom",
+    "searchQuery": "auto repair software in Uyo",
+    "localContext": "mechanic workshops in Ewet Housing, Osong Ama, and Shelter Afrique",
+    "mechanicCount": 145,
+    "heroHeadline": "The #1 Auto Repair Software for Mechanics in Uyo",
+    "painPoint": "Still writing invoices by hand in Akwa Ibom heat while losing track of spare parts inventory?"
+  },
+  {
+    "city": "lagos",
+    "displayName": "Lagos",
+    "state": "Lagos",
+    "searchQuery": "mechanic management system in Lagos",
+    "localContext": "auto centers in Ikeja, Lekki, Victoria Island, and Surulere",
+    "mechanicCount": 3200,
+    "heroHeadline": "Scale Your Lagos Auto Shop with Zero Friction",
+    "painPoint": "Are Lagos traffic and manual paperwork slowing down your workshop's daily output?"
+  },
+  {
+    "city": "abuja",
+    "displayName": "Abuja",
+    "state": "FCT",
+    "searchQuery": "auto repair shop software Abuja",
+    "localContext": "workshops in Wuse, Garki, Maitama, and Apo Mechanic Village",
+    "mechanicCount": 850,
+    "heroHeadline": "Premium Auto Repair Management for Abuja Mechanics",
+    "painPoint": "Managing high-end client vehicles in Abuja requires digital precision, not paper ledgers."
+  },
+  {
+    "city": "port-harcourt",
+    "displayName": "Port Harcourt",
+    "state": "Rivers",
+    "searchQuery": "mechanic software in Port Harcourt",
+    "localContext": "garages in GRA, D-Line, and Trans Amadi",
+    "mechanicCount": 640,
+    "heroHeadline": "Digital Infrastructure for Port Harcourt Auto Shops",
+    "painPoint": "Don't let missing parts inventory stall your Port Harcourt workshop operations."
+  },
+  {
+    "city": "ibadan",
+    "displayName": "Ibadan",
+    "state": "Oyo",
+    "searchQuery": "auto garage software Ibadan",
+    "localContext": "mechanic villages in Bodija, Ring Road, and Challenge",
+    "mechanicCount": 520,
+    "heroHeadline": "Modernize Your Ibadan Auto Garage Today",
+    "painPoint": "Transition from manual notebooks to digital speed and keep your Ibadan customers coming back."
+  }
+]

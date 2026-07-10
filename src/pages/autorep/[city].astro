@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import data from '../../data/autorep-nigeria.json';
+import EmailCapture from '../../components/EmailCapture.astro';
+
+export async function getStaticPaths() {
+  return data.map((location) => {
+    return {
+      params: { city: location.city },
+      props: { location },
+    };
+  });
+}
+
+const { location } = Astro.props;
+
+// Construct SEO metadata
+const title = `Auto Repair Software in ${location.displayName}, ${location.state} | AutoRep`;
+const description = `The #1 mechanic management system for auto shops in ${location.displayName}. Organize your workshop, track inventory, and send digital invoices instantly.`;
+---
+
+<BaseLayout title={title} description={description} canonicalOverride={`https://autorep.biz/${location.city}`}>
+  <main class="pseo-container">
+    <header class="pseo-hero">
+      <div class="hero-badge">📍 {location.displayName}, {location.state}</div>
+      <h1 class="hero-title">{location.heroHeadline}</h1>
+      <p class="hero-subtitle">
+        Join over {location.mechanicCount} mechanics upgrading their operations. 
+        {location.painPoint}
+      </p>
+      <div class="hero-cta">
+        <a href="https://autorep.biz" class="btn-primary">Start Your Free Trial</a>
+      </div>
+    </header>
+
+    <section class="pseo-content">
+      <div class="content-grid">
+        <div class="main-content">
+          <h2>Why Top Auto Shops in {location.displayName} Choose AutoRep</h2>
+          <p>
+            Running a successful auto repair business in {location.state} requires more than just mechanical skill. 
+            It requires operational leverage. From the bustling {location.localContext}, workshop owners are transitioning to digital management.
+          </p>
+          
+          <div class="feature-list">
+            <div class="feature-item">
+              <h3>📱 Digital Invoicing</h3>
+              <p>Send professional PDF invoices directly to your clients via WhatsApp or Email. No more lost paper receipts.</p>
+            </div>
+            <div class="feature-item">
+              <h3>🔧 Inventory Tracking</h3>
+              <p>Know exactly what spare parts are in stock. Prevent employee theft and stockouts before they happen.</p>
+            </div>
+            <div class="feature-item">
+              <h3>👥 Customer CRM</h3>
+              <p>Store vehicle history, repair logs, and client phone numbers. Send automated service reminders to increase repeat business.</p>
+            </div>
+          </div>
+
+          <div class="capture-section">
+            <EmailCapture />
+          </div>
+        </div>
+
+        <aside class="sidebar">
+          <div class="sidebar-card">
+            <h3>Local Market Data</h3>
+            <ul class="data-list">
+              <li><strong>Target Area:</strong> {location.displayName}</li>
+              <li><strong>Region:</strong> {location.state}</li>
+              <li><strong>Active Workshops:</strong> {location.mechanicCount}+</li>
+              <li><strong>Search Intent:</strong> <em>"{location.searchQuery}"</em></li>
+            </ul>
+          </div>
+          
+          <div class="sidebar-card dark">
+            <h3>Ready to scale?</h3>
+            <p>Don't let manual processes cap your revenue.</p>
+            <a href="https://autorep.biz" class="btn-secondary">Get AutoRep Now</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .pseo-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  .pseo-hero {
+    padding: 6rem 0 4rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--accent-color);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, #9ca3af 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 800px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--accent-color);
+    color: #0f172a;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.125rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3);
+    color: #0f172a;
+  }
+
+  .btn-secondary {
+    display: block;
+    text-align: center;
+    background: #fff;
+    color: #0f172a;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    margin-top: 1.5rem;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+    padding: 4rem 0;
+  }
+
+  .main-content h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .main-content p {
+    font-size: 1.125rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 3rem 0;
+  }
+
+  .feature-item h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-item p {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+
+  .sidebar-card {
+    background: var(--bg-card-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .sidebar-card.dark {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  }
+
+  .sidebar-card h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+  }
+
+  .data-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .data-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+  }
+
+  .data-list li strong {
+    color: #fff;
+  }
+
+  .capture-section {
+    margin-top: 4rem;
+  }
+
+  @media (max-width: 992px) {
+    .content-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .hero-title {
+      font-size: 2.5rem;
+    }
+  }
+</style>
