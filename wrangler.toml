@@ -1,6 +1,0 @@
-# Cloudflare Pages build configuration
-# Static assets (prerendered HTML, images, etc.) are in dist/client/
-# Server worker (API routes, SSR) is in dist/server/
-name = "davennie-labs-blog"
-compatibility_date = "2026-04-15"
-pages_build_output_dir = "dist/client"
