@@ -206,6 +206,12 @@ const videoSrc = frontmatter.heroImage
       width: 100%;
     }
 
+    @media (max-width: 768px) {
+      .post-layout-container {
+        padding: 1.5rem 1rem;
+      }
+    }
+
     .reading-progress-container {
       position: fixed;
       top: 61px;
@@ -294,6 +300,7 @@ const videoSrc = frontmatter.heroImage
       display: grid;
       grid-template-columns: 8fr 4fr;
       gap: 4rem;
+      min-width: 0;
     }
 
     @media (max-width: 992px) {
@@ -308,6 +315,8 @@ const videoSrc = frontmatter.heroImage
       font-size: 1.125rem;
       line-height: 1.8;
       color: #e5e7eb;
+      min-width: 0;
+      overflow-wrap: break-word;
     }
 
     .article-body :global(p) {
