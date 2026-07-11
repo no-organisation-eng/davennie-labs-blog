@@ -129,6 +129,7 @@ const { title, description, heroImage, publishDate, cluster, tags, canonicalOver
       .nav-links {
         display: flex;
         gap: 2rem;
+        align-items: center;
       }
 
       .nav-links a {
@@ -138,6 +139,57 @@ const { title, description, heroImage, publishDate, cluster, tags, canonicalOver
       }
 
       .nav-links a:hover, .nav-links a.active {
+        color: var(--text-color);
+      }
+
+      .nav-search-form {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        border-radius: 99px;
+        padding: 0.25rem 0.5rem 0.25rem 1rem;
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+
+      .nav-search-form:focus-within {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--accent-color);
+      }
+
+      .nav-search-form input {
+        background: transparent;
+        border: none;
+        color: var(--text-color);
+        outline: none;
+        font-size: 0.9rem;
+        width: 150px;
+        font-family: var(--font-sans);
+        transition: width 0.3s;
+      }
+
+      .nav-search-form input:focus {
+        width: 200px;
+      }
+
+      .nav-search-form input::placeholder {
+        color: var(--text-muted);
+      }
+
+      .nav-search-form button {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+      }
+
+      .nav-search-form button:hover {
         color: var(--text-color);
       }
 
@@ -415,9 +467,15 @@ const { title, description, heroImage, publishDate, cluster, tags, canonicalOver
           <img src="/logo-animated.gif" alt="Logo" style="width: 28px; height: 28px; border-radius: 6px; object-fit: cover;" /> DAVENNIE LABS
         </a>
         <nav class="nav-links">
-          <a href="/">Build Guides</a>
+          <a href="/">Blueprints</a>
           <a href="/about">About</a>
           <a href="/contact">Contact</a>
+          
+          <form action="/search" method="get" class="nav-search-form">
+            <input type="text" name="q" placeholder="Search insights..." aria-label="Search" required />
+            <button type="submit" aria-label="Submit Search">🔍</button>
+          </form>
+
           <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
             <span class="sun-icon">☀️</span>
             <span class="moon-icon">🌙</span>
