@@ -67,19 +67,74 @@ const description = `The ultimate AI lead conversion CRM for businesses in ${loc
               <li><strong>Target Area:</strong> {location.displayName}</li>
               <li><strong>Region:</strong> {location.state}</li>
               <li><strong>Active Brands:</strong> {location.businessCount}+</li>
-              <li><strong>Search Intent:</strong> <em>"{location.searchQuery}"</em></li>
+              <li><strong>Search Intent:</strong> <em id="page-search-query">"{location.searchQuery}"</em></li>
             </ul>
           </div>
           
           <div class="sidebar-card dark">
             <h3>Ready to scale?</h3>
             <p>Don't let manual comment replies cap your revenue.</p>
-            <a href="https://autorep.biz" class="btn-secondary">Get AutoRep Now</a>
+            <a href="https://autorep.biz" class="btn-secondary intent-cta">Get AutoRep Now</a>
           </div>
         </aside>
       </div>
     </section>
   </main>
+
+  <script define:vars={{ city: location.displayName, query: location.searchQuery }}>
+    // Rich Intent Capture Script
+    let sessionId = sessionStorage.getItem('autorep_session_id');
+    if (!sessionId) {
+      sessionId = crypto.randomUUID();
+      sessionStorage.setItem('autorep_session_id', sessionId);
+    }
+
+    let maxScroll = 0;
+    let timeOnPage = 0;
+    let ctaClicked = false;
+
+    // Track Time on Page
+    setInterval(() => {
+      timeOnPage += 5;
+    }, 5000);
+
+    // Track Scroll Depth
+    window.addEventListener('scroll', () => {
+      const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+      if (scrollPercent > maxScroll) {
+        maxScroll = scrollPercent;
+      }
+    }, { passive: true });
+
+    // Helper to send intent payload
+    const sendIntent = (metadata = {}) => {
+      navigator.sendBeacon('/api/intent/capture', JSON.stringify({
+        sessionId,
+        query,
+        city,
+        sourcePage: window.location.pathname,
+        timeOnPage,
+        scrollDepth: maxScroll,
+        ctaClicked: ctaClicked || metadata.ctaClicked || false,
+        metadata
+      }));
+    };
+
+    // Track CTA Clicks
+    document.querySelectorAll('.btn-primary, .btn-secondary, .intent-cta').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        ctaClicked = true;
+        sendIntent({ event: 'cta_click', targetText: e.target.innerText });
+      });
+    });
+
+    // Send data when user leaves the page
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        sendIntent({ event: 'page_exit' });
+      }
+    });
+  </script>
 </BaseLayout>
 
 <style>
