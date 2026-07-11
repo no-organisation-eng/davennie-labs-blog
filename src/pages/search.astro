@@ -71,9 +71,7 @@ const displayPosts = matchedPosts.length > 0 ? matchedPosts.slice(0, 3) : allPos
 <BaseLayout title={title} description={description} canonicalOverride={isAutoRepIntent && location ? `https://autorep.biz/${location.city}` : undefined}>
   
   {isAutoRepIntent && location ? (
-    <!-- ============================================== -->
-    <!-- INTENT A: AUTOREP PSEO LANDING PAGE            -->
-    <!-- ============================================== -->
+
     <main class="pseo-container">
       <header class="pseo-hero">
         <div class="hero-badge">📍 Optimized for {location.displayName}, {location.state}</div>
@@ -145,9 +143,7 @@ const displayPosts = matchedPosts.length > 0 ? matchedPosts.slice(0, 3) : allPos
       </section>
     </main>
   ) : (
-    <!-- ============================================== -->
-    <!-- INTENT B: STANDARD BLOG SEARCH RESULTS         -->
-    <!-- ============================================== -->
+
     <main class="search-results-container">
       <header class="search-header">
         <h1>Search Results</h1>
