@@ -69,6 +69,16 @@ const description = `The ultimate AI lead conversion CRM for businesses searchin
             </div>
           </div>
 
+          <div class="related-content">
+            <h3>📖 Essential Reading for Scale</h3>
+            <p>Dive deeper into the operational blueprints driving these results.</p>
+            <ul class="related-links">
+              <li><a href="/posts/the-5-minute-rule/">The 5-Minute Rule: Why Businesses Lose Customers Before They Even Start Selling</a></li>
+              <li><a href="/posts/ultimate-guide-turning-facebook-comments-into-whatsapp-leads/">The Ultimate Guide to Turning Facebook Comments into WhatsApp Leads</a></li>
+              <li><a href="/posts/stop-learning-to-code-start-solving-problems/">Stop Learning to Code. Start Learning to Solve Problems.</a></li>
+            </ul>
+          </div>
+
           <div class="capture-section">
             <EmailCapture />
           </div>
@@ -258,6 +268,44 @@ const description = `The ultimate AI lead conversion CRM for businesses searchin
   .feature-item p {
     font-size: 1rem;
     margin-bottom: 0;
+  }
+
+  .related-content {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: rgba(56, 189, 248, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+  }
+
+  .related-content h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .related-content p {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .related-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .related-links li a {
+    color: var(--accent-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+  }
+
+  .related-links li a:hover {
+    transform: translateX(5px);
   }
 
   .sidebar-card {
